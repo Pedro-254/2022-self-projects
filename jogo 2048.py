@@ -20,10 +20,10 @@ class Game:
                        [0,0,0,0], \
                        [0,0,0,0], \
                        [0,0,0,0]]
-        # self.matriz = [[1,2,3,4], \
-        #                [5,6,7,8], \
-        #                [9,10,11,12], \
-        #                [13,14,15,16]]
+        # self.matriz = [[2048,2048,2048,2048], \
+        #                [2048,2048,2048,2048], \
+        #                [2048,2048,2048,2048], \
+        #                [2048,2048,2048,2048]]
         self.state = 0
     def new_number(self):
         rand_line = randint(0,3)
@@ -49,19 +49,19 @@ class Game:
         if move == "d":
             # Iterar pelos elementos
             for line in range(4):
-                for colum in range(3,-1,-1):
-                    element = self.matriz[line][colum]
+                for column in range(3,-1,-1):
+                    element = self.matriz[line][column]
                     # Exlusao do elemento zero e elementos da coluna direita
-                    if element != 0 and colum != 3:
-                        for colum2 in range(colum+1,4):
+                    if element != 0 and column != 3:
+                        for colum2 in range(column+1,4):
                             space = self.matriz[line][colum2]
                             if space == 0:
-                                self.matriz[line][colum] = 0
+                                self.matriz[line][column] = 0
                                 self.matriz[line][colum2] = element
-                                colum = colum2
+                                column = colum2
                                 hv_move = 1
                             elif space == element:
-                                self.matriz[line][colum] = 0
+                                self.matriz[line][column] = 0
                                 self.matriz[line][colum2] = element + space
                                 hv_move = 1
                                 break
@@ -71,21 +71,21 @@ class Game:
         # Left
         elif move == "a":
             for line in range(4):
-                for colum in range(4):
-                    element = self.matriz[line][colum]
+                for column in range(4):
+                    element = self.matriz[line][column]
                     # Exlusao do elemento zero e elementos da coluna direita
-                    if element != 0 and colum != 0:
-                        for colum2 in range(colum-1,-1,-1):
+                    if element != 0 and column != 0:
+                        for colum2 in range(column-1,-1,-1):
                             space = self.matriz[line][colum2]
                             if space == 0:
-                                self.matriz[line][colum] = 0
+                                self.matriz[line][column] = 0
                                 self.matriz[line][colum2] = element
-                                colum = colum2
+                                column = colum2
                                 hv_move = 1
                                 continue
                             elif space == element:
                                 self.matriz[line][colum2] = element + space
-                                self.matriz[line][colum] = 0
+                                self.matriz[line][column] = 0
                                 hv_move = 1
                                 break
                             else:
@@ -93,21 +93,21 @@ class Game:
             pass
         # Up
         elif move == "w":
-            for colum in range(4):
+            for column in range(4):
                 for line in range(4):
-                    element = self.matriz[line][colum]
+                    element = self.matriz[line][column]
                     # Exlusao do elemento zero e elementos da coluna direita
                     if element != 0 and line != 0:
                         for line2 in range(line-1,-1,-1):
-                            space = self.matriz[line2][colum]
+                            space = self.matriz[line2][column]
                             if space == 0:
-                                self.matriz[line][colum] = 0
-                                self.matriz[line2][colum] = element
+                                self.matriz[line][column] = 0
+                                self.matriz[line2][column] = element
                                 line = line2
                                 hv_move = 1
                             elif space == element:
-                                self.matriz[line2][colum] = element + space
-                                self.matriz[line][colum] = 0
+                                self.matriz[line2][column] = element + space
+                                self.matriz[line][column] = 0
                                 hv_move = 1
                                 break
                             else:
@@ -115,21 +115,21 @@ class Game:
             pass
         # Down
         elif move == "s":
-            for colum in range(4):
+            for column in range(4):
                 for line in range(3,-1,-1):
-                    element = self.matriz[line][colum]
+                    element = self.matriz[line][column]
                     # Exlusao do elemento zero e elementos da coluna direita
                     if element != 0 and line != 3:
                         for line2 in range(line+1,4):
-                            space = self.matriz[line2][colum]
+                            space = self.matriz[line2][column]
                             if space == 0:
-                                self.matriz[line][colum] = 0
-                                self.matriz[line2][colum] = element
+                                self.matriz[line][column] = 0
+                                self.matriz[line2][column] = element
                                 line = line2
                                 hv_move = 1
                             elif space == element:
-                                self.matriz[line2][colum] = element + space
-                                self.matriz[line][colum] = 0
+                                self.matriz[line2][column] = element + space
+                                self.matriz[line][column] = 0
                                 hv_move = 1
                                 break
                             else:
@@ -139,6 +139,33 @@ class Game:
             print("Invalid input!")
             self.Moviment()
         if hv_move == 1:    self.new_number()
+
+    def end(self):
+        for line in range(4):
+            for column in range(4):
+                element = self.matriz = [line][column]
+
+                for i in range(-1,2):
+                    if line == 0 and i == -1:
+                        continue
+                    elif line == 3 and i>0:
+                        continue
+                    for j in range(-1,2):
+                        if column == 0 and j == -1:
+                            continue
+                        elif column == 3 and j>0:
+                            continue
+                        sec_element = self.matriz[line+i][column+j]
+                        if sec_element == 0 or sec_element == element:
+                            self.state = 0
+                            break
+                    if self.state == 0: break
+                if self.state == 0: break
+            if self.state == 0: break
+
+
+
+
 
     # def end(self):
     #   for line in range(4):
@@ -165,6 +192,7 @@ class Game:
         while (self.state == 1):
             self.print_matriz()
             self.Moviment()
+            self.end()
 
 new_game = Game()
 new_game.start()
