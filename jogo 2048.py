@@ -143,7 +143,7 @@ class Game:
     def end(self):
         for line in range(4):
             for column in range(4):
-                element = self.matriz = [line][column]
+                element = self.matriz[line][column]
 
                 for i in range(-1,2):
                     if line == 0 and i == -1:
