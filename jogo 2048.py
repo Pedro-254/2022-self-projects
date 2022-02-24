@@ -1,5 +1,6 @@
 from random import randint
 import sys
+import os
 
 
 class Menu:
@@ -19,7 +20,7 @@ class Game:
         self.matriz = [[0,0,0,0], \
                        [0,0,0,0], \
                        [0,0,0,0], \
-                       [8,4,4,0]]
+                       [0,0,0,0]]
         # self.matriz = [[2048,2048,2048,2048], \
         #                [2048,2048,2048,2048], \
         #                [2048,2048,2048,2048], \
@@ -43,7 +44,7 @@ class Game:
                     
         tamanho = "%" + str(len(str(maior))) + "d"
         for line in range(4):
-            print("[", end="")
+            print("\t\t\t[", end="")
             for colum in range(4):
                 print(tamanho%(self.matriz[line][colum]),end="")
                 if colum != len(self.matriz)-1: print(",",end="")
@@ -151,7 +152,6 @@ class Game:
         for line in range(4):
             for column in range(4):
                 elemento = self.matriz[line][column]
-                # self.matriz[line+1][column] // self.matriz[line-1][column] // self.matriz[line][column+1] // self.matriz[line][column+1]
                 for i in range(-1,+2,2):
                     if (not((line == 0 and i == -1) or (line == 3 and i == 1))):
                         adjacente = self.matriz[line+i][column]
@@ -174,8 +174,6 @@ class Game:
             for column in range(4):
                 if(self.matriz[line][column] == 2048):
                     self.state = 2
-    
-    # Para finalizar o jogo eu tenho que pegar todos os elementos e ver se seus adjacentes são 
         
     def start(self): 
         print(Menu())
@@ -184,9 +182,11 @@ class Game:
             self.state = 1
         else:
             return print("Jogo finalizado!")
+        os.system('cls' if os.name == 'nt' else 'clear')
         while (self.state == 1):
             self.print_matriz()
             self.Moviment()
+            os.system('cls' if os.name == 'nt' else 'clear')
             self.end()
         if (self.state == -1):
             self.print_matriz()
