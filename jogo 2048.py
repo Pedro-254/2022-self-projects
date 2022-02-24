@@ -9,10 +9,10 @@ class Menu:
         'S' ou 's': Mover para baixo\n \
         'A' ou 'a': mover para a esquerda\n \
         'D' ou 'd': Mover para a direita\n \
-        \t[0, 0, 0, 0]\n \
-        \t[0, 0, 0, 0]\n \
-        \t[0, 0, 0, 0]\n \
-        \t[0, 0, 0, 0]\n"
+        \t[0,0,0,0]\n \
+        \t[0,0,0,0]\n \
+        \t[0,0,0,0]\n \
+        \t[0,0,0,0]\n"
 
 class Game:
     def __init__(self):
