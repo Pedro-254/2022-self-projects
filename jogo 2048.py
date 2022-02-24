@@ -19,7 +19,7 @@ class Game:
         self.matriz = [[0,0,0,0], \
                        [0,0,0,0], \
                        [0,0,0,0], \
-                       [0,0,0,0]]
+                       [8,4,4,0]]
         # self.matriz = [[2048,2048,2048,2048], \
         #                [2048,2048,2048,2048], \
         #                [2048,2048,2048,2048], \
@@ -35,10 +35,17 @@ class Game:
             self.new_number()
     
     def print_matriz(self):
+        maior = 0
+        for line in range(4):
+            for column in range(4):
+                if self.matriz[line][column] > maior:
+                    maior = self.matriz[line][column]
+                    
+        tamanho = "%" + str(len(str(maior))) + "d"
         for line in range(4):
             print("[", end="")
             for colum in range(4):
-                print(str(self.matriz[line][colum]),end="")
+                print(tamanho%(self.matriz[line][colum]),end="")
                 if colum != len(self.matriz)-1: print(",",end="")
             print("]\n",end="")
             
@@ -143,42 +150,30 @@ class Game:
     def end(self):
         for line in range(4):
             for column in range(4):
-                element = self.matriz[line][column]
-
-                for i in range(-1,2):
-                    if line == 0 and i == -1:
-                        continue
-                    elif line == 3 and i>0:
-                        continue
-                    for j in range(-1,2):
-                        if column == 0 and j == -1:
-                            continue
-                        elif column == 3 and j>0:
-                            continue
-                        sec_element = self.matriz[line+i][column+j]
-                        if sec_element == 0 or sec_element == element:
-                            self.state = 0
+                elemento = self.matriz[line][column]
+                # self.matriz[line+1][column] // self.matriz[line-1][column] // self.matriz[line][column+1] // self.matriz[line][column+1]
+                for i in range(-1,+2,2):
+                    if (not((line == 0 and i == -1) or (line == 3 and i == 1))):
+                        adjacente = self.matriz[line+i][column]
+                        if adjacente == elemento or adjacente == 0:
                             break
-                    if self.state == 0: break
-                if self.state == 0: break
-            if self.state == 0: break
-
-
-
-
-
-    # def end(self):
-    #   for line in range(4):
-    #     for colum in range(4):
-    #       element = self.matriz[line][colum]
-    #       if element == 0:
-    #         break
-    #   if element != 0:
-    #     self.state = 0
-    #     return print("U lose!")
-    #     # sys.exit("U lose!")
-    #   else:
-    #     pass
+                for i in range(-1,+2,2):
+                    if (not((column == 0 and i == -1) or (column == 3 and i == 1))):
+                        adjacente = self.matriz[line][column+i]
+                        if adjacente == elemento or adjacente == 0:
+                            break
+                if adjacente == elemento or adjacente == 0:
+                    break
+            if adjacente == elemento or adjacente == 0:
+                self.state = 1
+                break
+            else:
+                self.state = -1
+        
+        for line in range(4):
+            for column in range(4):
+                if(self.matriz[line][column] == 2048):
+                    self.state = 2
     
     # Para finalizar o jogo eu tenho que pegar todos os elementos e ver se seus adjacentes são 
         
@@ -193,6 +188,12 @@ class Game:
             self.print_matriz()
             self.Moviment()
             self.end()
+        if (self.state == -1):
+            self.print_matriz()
+            print("Você Perdeu!")
+        elif (self.state == 2):
+            self.print_matriz()
+            print("Você Ganhou!")
 
 new_game = Game()
 new_game.start()
